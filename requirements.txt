@@ -1,0 +1,12 @@
+customtkinter==5.2.2
+Pillow==10.3.0
+pycaw==20240210
+comtypes==1.4.9
+keyboard==0.13.5
+cryptography==43.0.3
+requests==2.32.3
+pywin32==308
+pywinauto==0.6.9
+numpy==2.0.0
+opencv-python==4.7.0.68
+psutil==5.9.6
