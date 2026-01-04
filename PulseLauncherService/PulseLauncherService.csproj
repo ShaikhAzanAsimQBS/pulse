@@ -8,6 +8,10 @@
     <UseWindowsService>true</UseWindowsService>
     <AssemblyName>PulseLauncherService</AssemblyName>
     <RootNamespace>PulseLauncherService</RootNamespace>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>

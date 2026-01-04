@@ -23,8 +23,14 @@ if ([string]::IsNullOrEmpty($ServicePath)) {
     if (Test-Path $currentDirPath) {
         $ServicePath = $currentDirPath
     } else {
-        # Fall back to build output directory
-        $ServicePath = Join-Path $PSScriptRoot "PulseLauncherService\bin\Release\net8.0-windows\PulseLauncherService.exe"
+        # Fall back to publish output directory (self-contained)
+        $publishPath = Join-Path $PSScriptRoot "PulseLauncherService\bin\Release\net8.0-windows\win-x64\publish\PulseLauncherService.exe"
+        if (Test-Path $publishPath) {
+            $ServicePath = $publishPath
+        } else {
+            # Fall back to build output (non-self-contained)
+            $ServicePath = Join-Path $PSScriptRoot "PulseLauncherService\bin\Release\net8.0-windows\PulseLauncherService.exe"
+        }
     }
 }
 

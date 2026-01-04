@@ -18,11 +18,11 @@ try {
     exit 1
 }
 
-# Build Service
-Write-Host "`n[1/2] Building PulseLauncherService..." -ForegroundColor Yellow
+# Build Service (as self-contained)
+Write-Host "`n[1/2] Building PulseLauncherService (self-contained)..." -ForegroundColor Yellow
 Push-Location "PulseLauncherService"
 try {
-    dotnet build -c $Configuration
+    dotnet publish -c $Configuration -r win-x64 --self-contained true -p:PublishSingleFile=true
     if ($LASTEXITCODE -ne 0) {
         Write-Host "ERROR: Service build failed" -ForegroundColor Red
         Pop-Location
@@ -33,11 +33,11 @@ try {
     Pop-Location
 }
 
-# Build User Launcher
-Write-Host "`n[2/2] Building PulseUserLauncher..." -ForegroundColor Yellow
+# Build User Launcher (as self-contained)
+Write-Host "`n[2/2] Building PulseUserLauncher (self-contained)..." -ForegroundColor Yellow
 Push-Location "PulseUserLauncher"
 try {
-    dotnet build -c $Configuration
+    dotnet publish -c $Configuration -r win-x64 --self-contained true -p:PublishSingleFile=true
     if ($LASTEXITCODE -ne 0) {
         Write-Host "ERROR: User Launcher build failed" -ForegroundColor Red
         Pop-Location
@@ -53,8 +53,8 @@ Write-Host "Build Complete!" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "Output files:" -ForegroundColor Cyan
-Write-Host "  Service:   PulseLauncherService\bin\$Configuration\net8.0-windows\PulseLauncherService.exe" -ForegroundColor White
-Write-Host "  Launcher:  PulseUserLauncher\bin\$Configuration\net8.0-windows\PulseUserLauncher.exe" -ForegroundColor White
+Write-Host "  Service:   PulseLauncherService\bin\$Configuration\net8.0-windows\win-x64\publish\PulseLauncherService.exe" -ForegroundColor White
+Write-Host "  Launcher:  PulseUserLauncher\bin\$Configuration\net8.0-windows\win-x64\publish\PulseUserLauncher.exe" -ForegroundColor White
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow
 Write-Host "  1. Copy both .exe files to the same directory as PulseForm.exe" -ForegroundColor White

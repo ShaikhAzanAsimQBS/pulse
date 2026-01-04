@@ -2,3 +2,4 @@ venv/
 new_ui/
 testing/
 __pycache__/
+DeploymentPackage/

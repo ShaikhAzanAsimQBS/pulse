@@ -234,6 +234,8 @@ def keep_window_on_top(window, interval=3):
     t.start()
     logging.info("keep_window_on_top thread started")     
 
+#idher function(get_unmute_program_list) bane  ga to check taskmanager k thorugh how many programs are running
+#filter by program MS teams, zoom google meet/chrome 
 
 
 def mute_system():
@@ -315,7 +317,7 @@ def start_block_exe():
             block_path = os.path.join(os.getcwd(), "block.exe")
         
         if not os.path.exists(block_path):
-            block_path = "block.exe"  # Fallback to PATH
+            block_path = "block.exe"  # Fallback to PATH #settings k folder me le jao block.exe ko 
         
         block_process = subprocess.Popen(
             [block_path], 
@@ -378,7 +380,7 @@ def snooze_for_hours(hours):
     with open(SNOOZE_FILE, "w") as f:
         f.write(snooze_until.isoformat())
 
-    stop_block_exe()
+    stop_block_exe() #compulsoory on exit of pulse fomr 
     unmute_system()
     print("Snoozed, Exiting")
     root.destroy()
@@ -558,7 +560,7 @@ QUESTION_GET = "/pulse-survey/questions/index"
 STORE_QUESTION = "/pulse-survey-answers/store"       
 # Dictionary to store session data
 
-
+#removve login functionality 
 def login(email, password):
     url = f"{BASE_URL}{LOGIN_ENDPOINT}"
     params = {"email": email, "password": password}
@@ -746,6 +748,9 @@ def getQuestionOffline(date):
     
 from datetime import datetime, timedelta
 
+
+#cache api has to be called here instead of this one.
+#HIT cache api once to get all unasnswered days questions and store them in settings/questions folder as date wise .txt files.
 def call_next_three_days():
     today = datetime.today()
     save_dir = r"C:\Pulse\settings\questions"
@@ -1229,15 +1234,15 @@ def block_keys():
     """Block keyboard shortcuts with proper error handling."""
     def on_press(e):
         try:
-            if e.name == 'f4' and keyboard.is_pressed('alt'):
+            if e.name == 'f4' and keyboard.is_pressed('alt'): #nhi chlta
                 return False
-            if e.name == 'esc' and keyboard.is_pressed('ctrl') and keyboard.is_pressed('shift'):
+            if e.name == 'esc' and keyboard.is_pressed('ctrl') and keyboard.is_pressed('shift'):  #nhi chalta
                 return False
-            if e.name == 'tab' and keyboard.is_pressed('alt'):
+            if e.name == 'tab' and keyboard.is_pressed('alt'):  #nhi chlta
                 return False
             if e.name == 'windows':
                 return False
-            if keyboard.is_pressed('s') and keyboard.is_pressed('c') and keyboard.is_pressed('i') and e.name == 't':
+            if keyboard.is_pressed('s') and keyboard.is_pressed('c') and keyboard.is_pressed('i') and e.name == 't': # ye chalta hai 
                 logging.info("Admin shortcut detected. Exiting.")
                 try:
                     stop_block_exe()
@@ -1260,7 +1265,7 @@ def block_keys():
 
 
 
-# Prevent Task Manager (Warning: Not very reliable with Python only)
+# Prevent Task Manager (Warning: Not very reliable with Python only) nhi chalta 
 def kill_task_manager():
     """Kill Task Manager with proper error handling."""
     while True:
@@ -2096,7 +2101,7 @@ def show_thankyou_screen(duration_ms=5000):
             # Just ensure block.exe is stopped (in case it wasn't already)
             stop_block_exe()
         finally:
-            root.destroy()
+            root.destroy()#sytem.exit(0)
     
     root.after(duration_ms, finish_and_exit)
 

@@ -6,15 +6,36 @@ using PulseLauncherService;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+// Use Windows Service hosting
+builder.Services.AddWindowsService(options =>
+{
+    options.ServiceName = "PulseLauncherService";
+});
+
 // Configure Event Log logging
 builder.Services.AddLogging(logging =>
 {
     logging.ClearProviders();
+    
+    // Create Event Log source if it doesn't exist (service runs as LocalSystem, has permission)
+    try
+    {
+        if (!System.Diagnostics.EventLog.SourceExists("PulseLauncherService"))
+        {
+            System.Diagnostics.EventLog.CreateEventSource("PulseLauncherService", "Application");
+        }
+    }
+    catch
+    {
+        // If creation fails, EventLog provider will handle it
+    }
+    
     logging.AddEventLog(settings =>
     {
         settings.SourceName = "PulseLauncherService";
         settings.LogName = "Application";
     });
+    
     logging.SetMinimumLevel(LogLevel.Information);
 });
 
@@ -30,8 +51,23 @@ try
 }
 catch (Exception ex)
 {
-    var logger = host.Services.GetRequiredService<ILogger<Program>>();
-    logger.LogCritical(ex, "Service failed to start");
+    // Try to log, but if logging fails, at least we tried
+    try
+    {
+        var logger = host.Services.GetRequiredService<ILogger<Program>>();
+        logger.LogCritical(ex, "Service failed to start");
+    }
+    catch
+    {
+        // If logging fails, write to a file as last resort
+        try
+        {
+            var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "PulseLauncherService", "startup_error.log");
+            Directory.CreateDirectory(Path.GetDirectoryName(logPath)!);
+            File.WriteAllText(logPath, $"{DateTime.Now}: Service failed to start: {ex}");
+        }
+        catch { }
+    }
     throw;
 }
 

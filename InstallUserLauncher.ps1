@@ -21,8 +21,14 @@ if ([string]::IsNullOrEmpty($LauncherPath)) {
     if (Test-Path $currentDirPath) {
         $LauncherPath = $currentDirPath
     } else {
-        # Fall back to build output directory
-        $LauncherPath = Join-Path $PSScriptRoot "PulseUserLauncher\bin\Release\net8.0-windows\PulseUserLauncher.exe"
+        # Fall back to publish output directory (self-contained)
+        $publishPath = Join-Path $PSScriptRoot "PulseUserLauncher\bin\Release\net8.0-windows\win-x64\publish\PulseUserLauncher.exe"
+        if (Test-Path $publishPath) {
+            $LauncherPath = $publishPath
+        } else {
+            # Fall back to build output (non-self-contained)
+            $LauncherPath = Join-Path $PSScriptRoot "PulseUserLauncher\bin\Release\net8.0-windows\PulseUserLauncher.exe"
+        }
     }
 }
 

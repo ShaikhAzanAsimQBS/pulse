@@ -26,10 +26,18 @@ public class Worker : BackgroundService
         _timer = new Timer(async _ => await SignalUserLauncher(stoppingToken), null, 
             TimeSpan.Zero, TimeSpan.FromMinutes(10));
 
-        // Keep service running
-        while (!stoppingToken.IsCancellationRequested)
+        try
         {
-            await Task.Delay(1000, stoppingToken);
+            // Keep service running
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await Task.Delay(1000, stoppingToken);
+            }
+        }
+        finally
+        {
+            _logger.LogInformation("Pulse Launcher Service stopping at: {time}", DateTimeOffset.Now);
+            _timer?.Dispose();
         }
     }
 
@@ -45,7 +53,7 @@ public class Worker : BackgroundService
                 _pipeName, 
                 PipeDirection.Out, 
                 PipeOptions.None, 
-                TokenImpersonationLevel.Impersonate);
+                TokenImpersonationLevel.Impersonation);
 
             try
             {
@@ -75,13 +83,6 @@ public class Worker : BackgroundService
         {
             _logger.LogError(ex, "Error signaling user session launcher");
         }
-    }
-
-    public override void Stop()
-    {
-        _timer?.Dispose();
-        _logger.LogInformation("Pulse Launcher Service stopped at: {time}", DateTimeOffset.Now);
-        base.Stop();
     }
 
     public override void Dispose()

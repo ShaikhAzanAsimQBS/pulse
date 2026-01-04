@@ -107,16 +107,19 @@ class Program
             }
 
             // Get path to PulseForm.exe (same directory as this exe)
-            string? exeDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            if (string.IsNullOrEmpty(exeDir))
-            {
-                exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            }
+            // For single-file executables, use AppContext.BaseDirectory
+            string? exeDir = AppContext.BaseDirectory;
             
-            // Also try current working directory as fallback
+            // Fallback to current directory if BaseDirectory is not available
             if (string.IsNullOrEmpty(exeDir) || !Directory.Exists(exeDir))
             {
                 exeDir = Directory.GetCurrentDirectory();
+            }
+            
+            // Remove trailing directory separator if present
+            if (!string.IsNullOrEmpty(exeDir) && (exeDir.EndsWith(Path.DirectorySeparatorChar) || exeDir.EndsWith(Path.AltDirectorySeparatorChar)))
+            {
+                exeDir = exeDir.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             }
 
             string pulseFormPath = Path.Combine(exeDir, PulseFormExe);
