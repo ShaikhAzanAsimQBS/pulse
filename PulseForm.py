@@ -236,6 +236,35 @@ def keep_window_on_top(window, interval=3):
 
 #idher function(get_unmute_program_list) bane  ga to check taskmanager k thorugh how many programs are running
 #filter by program MS teams, zoom google meet/chrome 
+#belo is an example function to check if meeting app is running using psutil
+
+#chrome python tab check krna hai "meet". ne fucntion
+
+# def is_meeting_app_running():
+#     """
+#     Returns True if MS Teams, Zoom, Google Meet (Chrome tab),
+#     or Chrome is running. Otherwise False.
+#     """
+
+#     # Process names to check (lowercase)
+#     target_processes = {
+#         "ms-teams.exe",     # Microsoft Teams (new)
+#         "teams.exe",        # Microsoft Teams (classic)
+#         "zoom.exe",         # Zoom (Windows)
+#         "zoom",             # Zoom (macOS/Linux)
+#         "chrome.exe",       # Google Chrome (Windows) #check tabs in "meet"
+#         "google-chrome",    # Chrome (Linux)
+#         "chrome"            # Chrome (macOS)
+#     }
+
+#     for proc in psutil.process_iter(attrs=["name"]):
+#         try:
+#             if proc.info["name"] and proc.info["name"].lower() in target_processes:
+#                 return True
+#         except (psutil.NoSuchProcess, psutil.AccessDenied):
+#             continue
+
+#     return False
 
 
 def mute_system():
